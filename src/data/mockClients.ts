@@ -19,6 +19,23 @@ export const mockClients: Client[] = [
     updatedAt: "2024-03-10T14:20:00Z",
     status: "active",
   },
-  
-  // Add more as needed
+    {
+    id: 3,
+    name: "abc test",
+    email: "abctest@test.com",
+    type: "Individual",
+    createdAt: "2024-02-20T09:00:00Z",
+    updatedAt: "2024-03-20T14:20:00Z",
+    status: "active",
+  },
+  {
+    id: 4,
+    name: "xyz test",
+    email: "xyztest@test.com",
+    type: "Individual",
+    createdAt: "2024-02-30T09:00:00Z",
+    updatedAt: "2024-03-30T14:20:00Z",
+    status: "active",
+  },
+
 ];
