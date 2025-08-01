@@ -4,7 +4,6 @@ import type { Client } from "./types/client";
 import ClientTable from "./components/ClientTable";
 import SortPanel from "./components/SortPanel";
 
-
 type SortableField = "id" | "name" | "createdAt" | "updatedAt";
 
 type SortRule = {
@@ -24,8 +23,18 @@ function App() {
       for (let rule of sortRules) {
         const valA = a[rule.id];
         const valB = b[rule.id];
-        if (valA < valB) return rule.direction === "asc" ? -1 : 1;
-        if (valA > valB) return rule.direction === "asc" ? 1 : -1;
+
+        let compareA = valA;
+        let compareB = valB;
+
+        if ((rule.id === "createdAt" || rule.id === "updatedAt") && typeof valA === "string" && typeof valB === "string") {
+          compareA = new Date(valA).getTime();
+          compareB = new Date(valB).getTime();
+        }
+
+        if (compareA < compareB) return rule.direction === "asc" ? -1 : 1;
+        if (compareA > compareB) return rule.direction === "asc" ? 1 : -1;
+
       }
       return 0;
     });
@@ -33,9 +42,9 @@ function App() {
   }, [sortRules]);
 
   return (
-    <div className="p-6 font-sans">
-      <h1 className="text-2xl font-bold mb-4">Clients</h1>
-       <SortPanel sortRules={sortRules} setSortRules={setSortRules} />
+    <div>
+      <h1>Client Sorter</h1>
+      <SortPanel sortRules={sortRules} setSortRules={setSortRules} />
       <ClientTable clients={sortedClients} />
     </div>
   );
