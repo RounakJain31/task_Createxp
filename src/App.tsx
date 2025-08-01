@@ -18,28 +18,35 @@ function App() {
   ]);
   const [sortedClients, setSortedClients] = useState<Client[]>([]);
 
-  useEffect(() => {
-    const sorted = [...mockClients].sort((a, b) => {
-      for (let rule of sortRules) {
-        const valA = a[rule.id];
-        const valB = b[rule.id];
+useEffect(() => {
+  const sorted = [...mockClients].sort((a, b) => {
+    for (let rule of sortRules) {
+      let valA = a[rule.id];
+      let valB = b[rule.id];
 
-        let compareA = valA;
-        let compareB = valB;
+      let compareA: string | number = valA;
+      let compareB: string | number = valB;
 
-        if ((rule.id === "createdAt" || rule.id === "updatedAt") && typeof valA === "string" && typeof valB === "string") {
-          compareA = new Date(valA).getTime();
-          compareB = new Date(valB).getTime();
-        }
-
-        if (compareA < compareB) return rule.direction === "asc" ? -1 : 1;
-        if (compareA > compareB) return rule.direction === "asc" ? 1 : -1;
-
+      if (rule.id === "name" && typeof valA === "string" && typeof valB === "string") {
+        compareA = valA.toLowerCase();
+        compareB = valB.toLowerCase();
       }
-      return 0;
-    });
-    setSortedClients(sorted);
-  }, [sortRules]);
+
+      if ((rule.id === "createdAt" || rule.id === "updatedAt") &&
+        typeof valA === "string" && typeof valB === "string") {
+        compareA = new Date(valA).getTime();
+        compareB = new Date(valB).getTime();
+      }
+
+      if (compareA < compareB) return rule.direction === "asc" ? -1 : 1;
+      if (compareA > compareB) return rule.direction === "asc" ? 1 : -1;
+    }
+    return 0;
+  });
+
+  setSortedClients(sorted);
+}, [sortRules]);
+
 
   return (
     <div>
